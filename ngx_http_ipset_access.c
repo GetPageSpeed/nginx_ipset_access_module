@@ -3,11 +3,12 @@
  * Author: Mohammad Mahdi Roozitalab <mehdiboss_qi@hotmail.com>
  ********************************************************************/
 
+#include <ngx_config.h>
+#include <ngx_core.h>
+
 #include <pthread.h>
 #include <sys/socket.h>
 
-#include <ngx_config.h>
-#include <ngx_core.h>
 #include <ngx_http.h>
 
 #include <libipset/session.h>
