@@ -7,16 +7,18 @@ __DATA__
 === TEST: whitelist allows localhost
 --- init
     # ensure the ipset exists and has 127.0.0.1
-    system("ipset create testset hash:ip family inet") == 0 || die "create failed";
+    system("ipset create testset hash:ip family inet") == 0
+        || die "create failed";
     system("ipset flush testset") == 0;
-    system("ipset add testset 127.0.0.1") == 0 || die "add failed";
+    system("ipset add testset 127.0.0.1") == 0
+        || die "add failed";
 --- config
-    # enable realip module to trust X-Real-IP from localhost
+    # trust X-Real-IP from localhost
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
 
-    ipset_access on;
-    whitelist   testset;
+    # whitelist mode: only 127.0.0.1 passes
+    whitelist testset;
 
     location / {
         return 200 'OK';
@@ -29,14 +31,13 @@ OK
 
 === TEST: whitelist rejects other IP
 --- init
-    # keep testset containing only loopback
+    # keep only localhost in the set
     system("ipset flush testset") == 0;
 --- config
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
 
-    ipset_access on;
-    whitelist   testset;
+    whitelist testset;
 
     location / {
         return 200 'OK';
@@ -55,8 +56,7 @@ OK
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
 
-    ipset_access on;
-    blacklist   testset;
+    blacklist testset;
 
     location / {
         return 200 'OK';
@@ -73,8 +73,7 @@ OK
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
 
-    ipset_access on;
-    blacklist   testset;
+    blacklist testset;
 
     location / {
         return 200 'OK';
