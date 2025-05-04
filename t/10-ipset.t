@@ -7,10 +7,10 @@ __DATA__
 === TEST: whitelist allows localhost
 --- init
     # ensure the ipset exists and has 127.0.0.1
-    system("ipset create testset hash:ip family inet") == 0
+    system("/usr/sbin/ipset create testset hash:ip family inet") == 0
         || die "create failed";
-    system("ipset flush testset") == 0;
-    system("ipset add testset 127.0.0.1") == 0
+    system("/usr/sbin/ipset flush testset") == 0;
+    system("/usr/sbin/ipset add testset 127.0.0.1") == 0
         || die "add failed";
 --- config
     # trust X-Real-IP from localhost
@@ -32,7 +32,7 @@ OK
 === TEST: whitelist rejects other IP
 --- init
     # keep only localhost in the set
-    system("ipset flush testset") == 0;
+    system("/usr/sbin/ipset flush testset") == 0;
 --- config
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
@@ -50,8 +50,8 @@ OK
 
 === TEST: blacklist blocks localhost
 --- init
-    system("ipset flush testset") == 0;
-    system("ipset add testset 127.0.0.1") == 0;
+    system("/usr/sbin/ipset flush testset") == 0;
+    system("/usr/sbin/ipset add testset 127.0.0.1") == 0;
 --- config
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
@@ -68,7 +68,7 @@ OK
 
 === TEST: blacklist allows other IP
 --- init
-    system("ipset flush testset") == 0;
+    system("/usr/sbin/ipset flush testset") == 0;
 --- config
     real_ip_header   X-Real-IP;
     set_real_ip_from 127.0.0.0/8;
