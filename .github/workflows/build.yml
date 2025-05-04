@@ -32,7 +32,7 @@ jobs:
 
       - name: Configure NGINX to compile with the module statically
         run: |
-          cd nginx && ./configure --with-debug --add-module=..
+          cd nginx && ./configure --with-http_realip_module --with-debug --add-module=..
 
       - name: Make NGINX
         run: |
